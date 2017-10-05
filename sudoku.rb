@@ -1,4 +1,6 @@
 require_relative "board"
+require 'byebug'
+
 
 class SudokuGame
   def self.from_file(filename)
@@ -28,6 +30,16 @@ class SudokuGame
     pos
   end
 
+  def [](pos)
+    row,col = pos
+    @board[row][col]
+  end
+
+  def []=(pos,val)
+    row,col = pos
+    @board[row][col] = val
+  end
+
   def get_val
     val = nil
     until val && valid_val?(val)
@@ -47,9 +59,10 @@ class SudokuGame
   end
 
   def play_turn
+    debugger
     board.render
-    val = get_pos
-    pos = get_val
+    val = get_val
+    pos = get_pos
     board[pos] = val
   end
 
