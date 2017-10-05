@@ -1,6 +1,8 @@
 require_relative "tile"
+require 'byebug'
 
 class Board
+  attr_reader :grid
   def self.empty_grid
     Array.new(9) do
       Array.new(9) { Tile.new(0) }
@@ -9,6 +11,7 @@ class Board
 
   def self.from_file(filename)
     rows = File.readlines(filename).map(&:chomp)
+    # byebug
     tiles = rows.map do |row|
       nums = row.split("").map { |char| Integer(char) }
       nums.map { |num| Tile.new(num) }
@@ -23,13 +26,12 @@ class Board
 
   def [](pos)
     x, y = pos
-    grid[x][y]
+    @grid[x][y]
   end
 
   def []=(pos, value)
     x, y = pos
-    tile = grid[x][y]
-    tile.value = value
+    @grid[x][y] = value
   end
 
   def columns
@@ -37,6 +39,7 @@ class Board
   end
 
   def render
+    # debugger
     puts "  #{(0..8).to_a.join(" ")}"
     grid.each_with_index do |row, i|
       puts "#{i} #{row.join(" ")}"
@@ -58,6 +61,7 @@ class Board
   end
 
   def solved_set?(tiles)
+    # debugger
     nums = tiles.map(&:value)
     nums.sort == (1..9).to_a
   end
