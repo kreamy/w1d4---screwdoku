@@ -6,6 +6,7 @@ class Tile
   def initialize(value)
     @value = value
     @given = value == 0 ? false : true
+    # value == 0? @given = false : @given = true 
   end
 
   def color

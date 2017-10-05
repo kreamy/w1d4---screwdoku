@@ -1,4 +1,5 @@
 require_relative "board"
+require 'byebug'
 
 # People write terrible method names in real life.
 # On the job, it is your job to figure out how the methods work and then name them better.
@@ -14,7 +15,30 @@ class SudokuGame
     @board = board
   end
 
+
+
+  def commence_proceedings
+    process_parameters until board_process_terminates?
+    puts "Congratulations, you win!"
+  end
+
+  def process_parameters
+    @board.render
+    pos_to_val(retrieve_pos_from_ui, retrieve_value_from_ui)
+
+  end
+
+  def board_process_terminates?
+    board.terminate?
+  end
+
+  def pos_to_val(p, v)
+    board[p] = v
+
+  end
+
   def retrieve_pos_from_ui
+    # debugger
     p = nil
     until p && legal_illegibility_of_p?(p)
       puts "Please enter a position on the board (e.g., '3,4')"
@@ -30,6 +54,12 @@ class SudokuGame
       end
     end
     p
+  end
+
+  def legal_illegibility_of_p?(pos)
+    pos.is_a?(Array) &&
+      pos.length == 2 &&
+      pos.all? { |x| x.between?(0, board.size - 1) }
   end
 
   def retrieve_value_from_ui
@@ -50,28 +80,15 @@ class SudokuGame
     Integer(string)
   end
 
-  def process_parameters
-    pos_to_val(retrieve_pos_from_ui, retrieve_value_from_ui)
-  end
 
-  def pos_to_val(p, v)
-    board[p] = v
-  end
 
-  def commence_proceedings
-    process_parameters until board_process_terminates?
-    puts "Congratulations, you win!"
-  end
 
-  def board_process_terminates?
-    board.terminate?
-  end
 
-  def legal_illegibility_of_p?(pos)
-    pos.is_a?(Array) &&
-      pos.length == 2 &&
-      pos.all? { |x| x.between?(0, board.size - 1) }
-  end
+
+
+
+
+
 
   def legal_illegibility_of_v?(val)
     val.is_a?(Integer) &&
